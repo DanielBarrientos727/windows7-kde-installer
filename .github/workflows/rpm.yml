@@ -33,10 +33,10 @@ jobs:
         shell: bash
         run: |
           set -Eeuo pipefail
-          mkdir -p "$RUNNER_TEMP/rpm-out"
+          mkdir -p "$GITHUB_WORKSPACE/rpm-out"
           docker run --rm \
             -v "$GITHUB_WORKSPACE:/src:ro" \
-            -v "$RUNNER_TEMP/rpm-out:/out" \
+            -v "$GITHUB_WORKSPACE/rpm-out:/out" \
             fedora:44 \
             bash -euxo pipefail -c '
               dnf -y install rpm-build
@@ -52,5 +52,5 @@ jobs:
         uses: actions/upload-artifact@v4
         with:
           name: windows7-kde-rpm-fedora-44
-          path: \${{ runner.temp }}/rpm-out/*
+          path: rpm-out/*
           if-no-files-found: error
