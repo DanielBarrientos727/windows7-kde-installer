@@ -129,13 +129,13 @@ install_kvantum() {
       require_command apt-cache
       local -a packages=()
       local candidate
+      sudo apt-get update
       # Package names differ across Debian/Ubuntu releases. Install only names
-      # present in the configured repositories; do not add third-party PPAs.
+      # with a real candidate in the configured repositories; do not add PPAs.
       for candidate in qt6-style-kvantum qt6-style-kvantum-themes kvantum-manager; do
-        if apt-cache show "$candidate" >/dev/null 2>&1; then packages+=("$candidate"); fi
+        if apt-cache policy "$candidate" 2>/dev/null | grep -Eq "Candidate: [^ (]"; then packages+=("$candidate"); fi
       done
       ((${#packages[@]} > 0)) || die 'No encuentro Kvantum en los repositorios APT configurados. No añadiré un PPA automáticamente; consulta la documentación de tu distro.'
-      sudo apt-get update
       sudo apt-get install -y "${packages[@]}"
       ;;
     zypper)
