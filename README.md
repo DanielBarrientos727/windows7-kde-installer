@@ -60,6 +60,20 @@ El instalador está diseñado para sesiones de **KDE Plasma 6 o superior**. No e
 
 Requisitos: Bash, Git, sudo, curl para la instalación rápida, una sesión gráfica activa de KDE Plasma 6+ y conexión a Internet.
 
+## Paquete RPM para Fedora
+
+El repositorio también incluye el empaquetado nativo en **windows7-kde.spec**, el comando **windows7-kde** y un workflow de GitHub Actions para construir un RPM de prueba en Fedora 44. Puedes consultar [las instrucciones de COPR](https://github.com/DanielBarrientos727/windows7-kde-installer/blob/main/packaging/fedora/COPR.md).
+
+**Importante: el paquete todavía no está publicado en COPR.** Por tanto, `sudo dnf install windows7-kde` no está disponible todavía desde los repositorios normales de Fedora. Primero hay que crear el proyecto COPR, vincular este repositorio de GitHub, compilar el paquete y confirmar que la compilación termina correctamente.
+
+Cuando el repositorio COPR esté habilitado en Fedora, la instalación será:
+
+~~~bash
+sudo dnf install windows7-kde
+~~~
+
+Tras instalarlo, ejecuta **windows7-kde** como usuario normal dentro de KDE Plasma 6 o superior, sin sudo. El RPM instala el lanzador y declara las dependencias de Plasma, Git, Bash y Kvantum; la personalización visual se aplica en la sesión del usuario.
+
 ## Qué cambia y qué no
 
 - Instala el tema global **Windows 7 Enhanced** y su paquete de iconos.
