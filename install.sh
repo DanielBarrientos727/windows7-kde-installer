@@ -111,6 +111,13 @@ install_kvantum() {
     die "Distribución no soportada automáticamente: $id. Instala Kvantum desde el gestor de paquetes de tu distro y vuelve a ejecutar el instalador."
   fi
 
+  # Native packages (including this Fedora RPM) may already declare Kvantum
+  # as a dependency. Avoid asking for sudo or invoking the package manager again.
+  if command -v kvantummanager >/dev/null 2>&1; then
+    ok 'Kvantum ya está instalado.'
+    return 0
+  fi
+
   require_command sudo
   info 'Kvantum se instalará con el gestor de paquetes del sistema.'
   info 'El resto de componentes se instalarán únicamente en tu carpeta de usuario.'
