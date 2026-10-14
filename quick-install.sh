@@ -57,4 +57,5 @@ fi
 [[ -f "$INSTALL_DIR/install.sh" ]] || die 'No encuentro install.sh en la copia descargada.'
 ok 'Instalador preparado.'
 info 'Se abrirá el instalador principal; revisa los cambios y confirma allí cuando estés listo.'
-exec bash "$INSTALL_DIR/install.sh" --install
+[[ -r /dev/tty ]] || die 'No encuentro una terminal interactiva (/dev/tty). Ejecuta el comando desde una terminal de escritorio.'
+exec bash "$INSTALL_DIR/install.sh" --install </dev/tty
