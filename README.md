@@ -82,7 +82,7 @@ Tras instalarlo, ejecuta **windows7-kde** como usuario normal dentro de KDE Plas
 - Si detecta componentes de Windows 7 Enhanced ya instalados fuera de una instalación previa de este script, se detiene para evitar sobrescribirlos sin una copia de seguridad.
 - La opción `--restore` restaura la configuración respaldada y retira las carpetas de tema instaladas por el script.
 - Kvantum no se desinstala automáticamente durante la restauración, ya que otras aplicaciones pueden utilizarlo.
-- **No borra ni reconstruye los paneles de Plasma**, para evitar eliminar tus widgets o perder un panel personalizado. La barra inferior y el menú de aplicaciones pueden necesitar ajustes manuales para parecerse más a Windows 7.
+- El tema global **puede cambiar la disposición de los paneles y del escritorio** para acercarlos a Windows 7. El instalador respalda el archivo de configuración de los paneles (`plasma-org.kde.plasma.desktop-appletsrc`) y la opción `--restore` permite recuperarlo junto con los demás archivos respaldados. El aspecto final puede requerir ajustes manuales.
 - No modifica SDDM, la pantalla de inicio de sesión, el arranque ni las aplicaciones del sistema.
 
 El resultado puede variar según la distribución y la versión de Plasma. Si los bordes de las ventanas o el estilo de algunas aplicaciones no se actualizan por completo, cierra sesión y vuelve a entrar.
