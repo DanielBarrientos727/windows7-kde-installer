@@ -22,6 +22,23 @@ No se ejecuta como `root`; solo pedirá privilegios administrativos para instala
 
 Por seguridad, ejecuta este comando solo si confías en el repositorio. Puedes inspeccionar primero el código de [quick-install.sh](https://github.com/DanielBarrientos727/windows7-kde-installer/blob/main/quick-install.sh).
 
+## Instalación como paquete Fedora (RPM)
+
+El repositorio también incluye el empaquetado RPM en `windows7-kde.spec` y una comprobación de compilación con GitHub Actions.
+
+**El paquete todavía no está publicado en COPR.** Por tanto, el comando DNF de abajo no estará disponible hasta que se cree el proyecto COPR y termine correctamente una compilación.
+
+Cuando esté publicado, el flujo previsto será:
+
+~~~bash
+sudo dnf install dnf-plugins-core
+sudo dnf copr enable YOUR_COPR_USERNAME/windows7-kde
+sudo dnf install windows7-kde
+windows7-kde
+~~~
+
+El comando para habilitar COPR se ejecuta una sola vez por sistema. Sustituye `YOUR_COPR_USERNAME` por el propietario real del repositorio COPR. Instalar el RPM no cambia tu escritorio desde `root`; ejecuta `windows7-kde` como tu usuario, dentro de una sesión activa de KDE Plasma 6+. Consulta [las instrucciones de empaquetado Fedora](https://github.com/DanielBarrientos727/windows7-kde-installer/blob/main/packaging/fedora/README.md) para publicar la primera versión.
+
 ## Instalación manual
 
 Clona este repositorio y ejecuta el instalador **desde una sesión gráfica de KDE Plasma**:
