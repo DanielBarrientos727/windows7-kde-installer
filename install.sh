@@ -238,9 +238,9 @@ install_all() {
   fi
 
   guard_existing_install
-  install_kvantum
   require_command git
   clone_sources
+  install_kvantum
   create_backup
 
   info 'Instalando los componentes de apariencia…'
