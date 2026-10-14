@@ -40,6 +40,7 @@ Requisitos: Bash, Git, sudo, una sesión activa de KDE Plasma 6+ y acceso a Inte
 - Instala y aplica el tema global **Windows 7 Enhanced** y sus iconos.
 - Configura el tema Kvantum de Windows 7 Enhanced.
 - Guarda una copia de los archivos de configuración visual anteriores.
+- Si detecta componentes Windows 7 Enhanced ya instalados fuera de una instalación previa del propio script, se detiene para evitar sobrescribirlos sin copia de seguridad.
 - La opción **--restore** restaura esa configuración y retira las carpetas de tema instaladas por este script. Kvantum se conserva instalado porque otras aplicaciones pueden usarlo.
 - **No borra ni reconstruye los paneles de Plasma.** Así evita quitar tus widgets o perder un panel personalizado. El resultado exacto de la barra de tareas depende del panel que ya tengas; en caso de usar una disposición personalizada, puede requerir algún ajuste manual.
 - No cambia SDDM, la pantalla de inicio de sesión, el arranque, fuentes de Windows ni aplicaciones del sistema.
