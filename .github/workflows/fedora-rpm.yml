@@ -1,0 +1,60 @@
+name: Fedora RPM package
+
+on:
+  push:
+    branches: [main, "v*"]
+    paths:
+      - "windows7-kde.spec"
+      - "install.sh"
+      - "quick-install.sh"
+      - "packaging/fedora/**"
+      - "README.md"
+      - "LICENSE"
+      - ".github/workflows/fedora-rpm.yml"
+  pull_request:
+    paths:
+      - "windows7-kde.spec"
+      - "install.sh"
+      - "quick-install.sh"
+      - "packaging/fedora/**"
+      - "README.md"
+      - "LICENSE"
+      - ".github/workflows/fedora-rpm.yml"
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+jobs:
+  build-rpm:
+    runs-on: ubuntu-latest
+    container: fedora:44
+    steps:
+      - name: Install build tools
+        run: dnf install -y bash curl git-core gzip rpm-build tar
+      - name: Check out source
+        uses: actions/checkout@v4
+      - name: Check shell syntax
+        run: |
+          bash -n install.sh
+          bash -n quick-install.sh
+          bash -n packaging/fedora/windows7-kde
+      - name: Prepare RPM build tree
+        run: |
+          TOPDIR="$GITHUB_WORKSPACE/rpmbuild"
+          mkdir -p "$TOPDIR/SOURCES" "$TOPDIR/SPECS" "$TOPDIR/RPMS" "$TOPDIR/SRPMS"
+          cp windows7-kde.spec "$TOPDIR/SPECS/"
+          curl --fail --location --silent --show-error \
+            "https://github.com/DanielBarrientos727/windows7-kde-installer/archive/refs/heads/v0.1.0.tar.gz" \
+            --output "$TOPDIR/SOURCES/v0.1.0.tar.gz"
+      - name: Build RPM and source RPM
+        run: |
+          rpmbuild -ba "$GITHUB_WORKSPACE/rpmbuild/SPECS/windows7-kde.spec" \
+            --define "_topdir $GITHUB_WORKSPACE/rpmbuild"
+      - name: Upload RPM artifacts
+        uses: actions/upload-artifact@v4
+        with:
+          name: windows7-kde-fedora-rpm
+          path: |
+            rpmbuild/RPMS/**/*.rpm
+            rpmbuild/SRPMS/*.src.rpm
