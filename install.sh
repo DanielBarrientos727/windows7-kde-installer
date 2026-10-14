@@ -161,8 +161,6 @@ create_backup() {
     'kwinrc'
     'plasmarc'
     'ksplashrc'
-    'plasma-org.kde.plasma.desktop-appletsrc'
-    'plasmashellrc'
     'Kvantum/kvantum.kvconfig'
   )
 
@@ -189,6 +187,26 @@ clone_sources() {
   [[ -x "$WORK_DIR/windows-7-enhanced/install.sh" || -f "$WORK_DIR/windows-7-enhanced/install.sh" ]] || die 'El repositorio del tema no contiene install.sh.'
   [[ -x "$WORK_DIR/windows-7-enhanced-icons/install.sh" || -f "$WORK_DIR/windows-7-enhanced-icons/install.sh" ]] || die 'El repositorio de iconos no contiene install.sh.'
   ok 'Repositorios descargados.'
+}
+
+guard_existing_install() {
+  [[ -f "$BACKUP_MANIFEST" ]] && return
+  local path
+  local -a existing_paths=(
+    "$DATA_HOME/plasma/look-and-feel/windows-7-enhanced"
+    "$DATA_HOME/plasma/look-and-feel/windows-7-enhanced-splash"
+    "$DATA_HOME/plasma/desktoptheme/windows-7-enhanced"
+    "$DATA_HOME/aurorae/themes/windows-7-enhanced"
+    "$DATA_HOME/icons/windows-7-enhanced"
+    "$CONFIG_HOME/Kvantum/windows-7-enhanced"
+    "$DATA_HOME/color-schemes/Windows7Enhanced.colors"
+    "$DATA_HOME/color-schemes/Windows7EnhancedAero.colors"
+  )
+  for path in "${existing_paths[@]}"; do
+    if [[ -e "$path" || -L "$path" ]]; then
+      die "Ya existe un componente Windows 7 Enhanced en $path. No lo sobrescribiré sin una copia de seguridad. Retíralo o respáldalo manualmente primero."
+    fi
+  done
 }
 
 set_kvantum_theme() {
@@ -219,6 +237,7 @@ install_all() {
     return 0
   fi
 
+  guard_existing_install
   install_kvantum
   require_command git
   clone_sources
@@ -280,7 +299,7 @@ restore_baseline() {
     [[ -n "$rel" ]] || continue
     # Only restore the explicit set of configuration files managed by this script.
     case "$rel" in
-      kdeglobals|kwinrc|plasmarc|ksplashrc|plasma-org.kde.plasma.desktop-appletsrc|plasmashellrc|Kvantum/kvantum.kvconfig) ;;
+      kdeglobals|kwinrc|plasmarc|ksplashrc|Kvantum/kvantum.kvconfig) ;;
       *) die "Entrada inesperada en la copia de seguridad: $rel" ;;
     esac
     dst="$CONFIG_HOME/$rel"
