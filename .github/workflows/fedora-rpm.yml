@@ -51,6 +51,12 @@ jobs:
         run: |
           rpmbuild -ba "$GITHUB_WORKSPACE/rpmbuild/SPECS/windows7-kde.spec" \
             --define "_topdir $GITHUB_WORKSPACE/rpmbuild"
+      - name: Verify RPM payload
+        run: |
+          RPM_FILE="$(find "$GITHUB_WORKSPACE/rpmbuild/RPMS" -type f -name 'windows7-kde-*.rpm' -print -quit)"
+          test -n "$RPM_FILE"
+          rpm -qpl "$RPM_FILE" | grep -Fx /usr/bin/windows7-kde
+          rpm -qpl "$RPM_FILE" | grep -Fx /usr/libexec/windows7-kde/install.sh
       - name: Upload RPM artifacts
         uses: actions/upload-artifact@v4
         with:
