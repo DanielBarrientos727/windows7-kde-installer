@@ -1,0 +1,56 @@
+name: Fedora RPM
+
+on:
+  push:
+    branches: [main]
+    paths:
+      - "install.sh"
+      - "quick-install.sh"
+      - "windows7-kde.spec"
+      - "packaging/fedora/**"
+      - ".github/workflows/rpm.yml"
+  pull_request:
+    branches: [main]
+    paths:
+      - "install.sh"
+      - "quick-install.sh"
+      - "windows7-kde.spec"
+      - "packaging/fedora/**"
+      - ".github/workflows/rpm.yml"
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+jobs:
+  build-rpm:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Check out repository
+        uses: actions/checkout@v4
+
+      - name: Build RPM in Fedora 44
+        shell: bash
+        run: |
+          set -Eeuo pipefail
+          mkdir -p "$RUNNER_TEMP/rpm-out"
+          docker run --rm \
+            -v "$GITHUB_WORKSPACE:/src:ro" \
+            -v "$RUNNER_TEMP/rpm-out:/out" \
+            fedora:44 \
+            bash -euxo pipefail -c '
+              dnf -y install rpm-build
+              mkdir -p /root/rpmbuild/{BUILD,BUILDROOT,RPMS,SOURCES,SPECS,SRPMS}
+              cp /src/windows7-kde.spec /root/rpmbuild/SPECS/
+              rpmbuild -ba /root/rpmbuild/SPECS/windows7-kde.spec \
+                --define "_topdir /root/rpmbuild"
+              cp /root/rpmbuild/RPMS/noarch/*.rpm /out/
+              cp /root/rpmbuild/SRPMS/*.src.rpm /out/
+            '
+
+      - name: Upload RPM artifacts
+        uses: actions/upload-artifact@v4
+        with:
+          name: windows7-kde-rpm-fedora-44
+          path: \${{ runner.temp }}/rpm-out/*
+          if-no-files-found: error
