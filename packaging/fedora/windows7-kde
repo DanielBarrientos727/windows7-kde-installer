@@ -1,10 +1,18 @@
 #!/usr/bin/env bash
 set -Eeuo pipefail
 
-if [[ "\${EUID:-$(id -u)}" -eq 0 ]]; then
-  printf 'No ejecutes windows7-kde con sudo ni como root.\n' >&2
-  printf 'Instala el paquete con sudo dnf, pero ejecuta después windows7-kde como tu usuario de escritorio.\n' >&2
+readonly INSTALLER='/usr/libexec/windows7-kde/install.sh'
+
+if [[ "$(id -u)" -eq 0 ]]; then
+  printf '[ERROR] No ejecutes windows7-kde con sudo ni como root.\n' >&2
+  printf '        Instala el paquete con sudo dnf, pero ejecuta después windows7-kde como tu usuario de escritorio.\n' >&2
   exit 1
 fi
 
-exec /usr/bin/bash /usr/share/windows7-kde/install.sh "$@"
+if [[ ! -r "$INSTALLER" ]]; then
+  printf '[ERROR] No encuentro el instalador del paquete en %s\n' "$INSTALLER" >&2
+  printf '        Reinstala el paquete windows7-kde.\n' >&2
+  exit 1
+fi
+
+exec /usr/bin/bash "$INSTALLER" "$@"
