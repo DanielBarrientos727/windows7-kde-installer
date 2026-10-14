@@ -168,6 +168,7 @@ create_backup() {
     'kwinrc'
     'plasmarc'
     'ksplashrc'
+    'plasma-org.kde.plasma.desktop-appletsrc'
     'Kvantum/kvantum.kvconfig'
   )
 
@@ -270,7 +271,8 @@ install_all() {
   printf '  • Tema global: Windows 7 Enhanced\n'
   printf '  • Iconos: Windows 7 Enhanced\n'
   printf '  • Estilo Qt: Kvantum + Windows 7 Enhanced\n'
-  printf '\nTu panel actual se conserva: el instalador no borra ni reconstruye paneles/applet de Plasma.\n'
+  printf '\nEl tema global puede cambiar la disposición de los paneles y el escritorio para acercarla a Windows 7.\n'
+  printf 'La configuración de los paneles se respalda y puede restaurarse con --restore.\n'
   printf 'Si algún borde de ventana o estilo no cambia del todo, cierra sesión y vuelve a entrar.\n'
   printf 'Para revertir la configuración y retirar estos componentes: %s./install.sh --restore%s\n\n' "$C_CYAN" "$C_RESET"
 }
@@ -306,7 +308,7 @@ restore_baseline() {
     [[ -n "$rel" ]] || continue
     # Only restore the explicit set of configuration files managed by this script.
     case "$rel" in
-      kdeglobals|kwinrc|plasmarc|ksplashrc|Kvantum/kvantum.kvconfig) ;;
+      kdeglobals|kwinrc|plasmarc|ksplashrc|plasma-org.kde.plasma.desktop-appletsrc|Kvantum/kvantum.kvconfig) ;;
       *) die "Entrada inesperada en la copia de seguridad: $rel" ;;
     esac
     dst="$CONFIG_HOME/$rel"
