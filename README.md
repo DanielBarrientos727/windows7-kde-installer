@@ -8,7 +8,19 @@ El script descarga e instala los paquetes de apariencia de sus proyectos origina
 - [Windows 7 Enhanced Icons](https://github.com/leonkhoo123/windows-7-enhanced-icons): iconos del sistema.
 - [Kvantum](https://github.com/tsujan/Kvantum): estilo de widgets Qt necesario para que los controles también sigan el aspecto del tema.
 
-## Instalación
+## Instalación rápida (un comando)
+
+Desde una terminal dentro de tu sesión gráfica KDE Plasma 6+, puedes descargar y ejecutar el instalador con:
+
+~~~bash
+curl -fsSL https://raw.githubusercontent.com/DanielBarrientos727/windows7-kde-installer/main/quick-install.sh | bash
+~~~
+
+El comando necesita **curl, Bash y Git**. El script descarga o actualiza una copia limpia en `$XDG_DATA_HOME/programs/windows7-kde-installer` (normalmente `~/.local/share/programs/windows7-kde-installer`) y abre el instalador principal. No se ejecuta como root; solo pedirá privilegios administrativos para instalar Kvantum con el gestor de paquetes. La instalación todavía te pide confirmación antes de cambiar la apariencia.
+
+Por seguridad, ejecuta este comando solo si confías en el repositorio. Puedes inspeccionar primero el código de [quick-install.sh](https://github.com/DanielBarrientos727/windows7-kde-installer/blob/main/quick-install.sh).
+
+## Instalación manual
 
 Clona este repositorio y ejecuta el instalador **desde una sesión gráfica de KDE Plasma**:
 
@@ -33,7 +45,7 @@ Antes de instalar, el script comprueba la versión de Plasma, instala Kvantum de
 
 El instalador detecta recetas de paquetes para Fedora, Arch Linux y derivados, Debian/Ubuntu y derivados, y openSUSE. En Debian/Ubuntu solo usa paquetes que encuentre en los repositorios ya configurados; **no añade PPAs**. Otras distribuciones deben instalar Kvantum manualmente antes de que puedan añadirse como compatibles.
 
-Requisitos: Bash, Git, sudo, una sesión activa de KDE Plasma 6+ y acceso a Internet.
+Requisitos: Bash, Git, sudo, curl para el comando de instalación rápida, una sesión activa de KDE Plasma 6+ y acceso a Internet. El instalador reconoce Fedora, Arch Linux y derivados, Debian/Ubuntu y derivados, y openSUSE; no está diseñado para escritorios como GNOME ni para distribuciones sin receta de paquetes compatible.
 
 ## Qué cambia y qué no
 
